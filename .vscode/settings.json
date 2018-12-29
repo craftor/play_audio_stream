@@ -1,0 +1,4 @@
+{
+    "python.linting.pylintEnabled": true,
+    "python.pythonPath": "D:\\Software\\Anaconda3\\envs\\pyqt5\\python.exe"
+}
