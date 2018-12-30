@@ -30,6 +30,15 @@ def get_busy():
     except Exception:
         return "Failed"
 
+# 停止播放音乐
+@app.route('/stop')
+def stop():
+    try:
+        pygame.mixer.music.stop()
+        return "OK"
+    except Exception:
+        return "Failed"
+
 # 暂停
 @app.route('/pause')
 def pause():
