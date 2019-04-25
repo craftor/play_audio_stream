@@ -82,7 +82,7 @@ def set_volume():
 def queue():
     try:
         # 获取URL
-        file_url = request.args.get('file_name')
+        file_url = request.args.get('play_file_name')
         # 截取文件名
         filename = file_url.split('/')[-1]
     except Exception:
@@ -113,7 +113,7 @@ def queue():
 def clear():
     # 获取文件名
     try:
-        filename = request.args.get('file_name')
+        filename = request.args.get('play_file_name')
     except Exception:
         return "Failed"
     # 删除文件
@@ -129,7 +129,7 @@ def play():
 
     try:
         # 获取URL
-        file_url = request.args.get('file_name')
+        file_url = request.args.get('play_file_name')
         # 截取文件名
         filename = file_url.split('/')[-1]
     except Exception:
@@ -187,4 +187,4 @@ def play():
     return "OK"
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0',port=8080)
