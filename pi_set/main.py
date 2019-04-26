@@ -27,6 +27,7 @@ import datetime
 import time
 import socket
 import threading
+import uuid
 
 VERSION = 3.0
 
@@ -78,6 +79,13 @@ class RBCThread(QThread):
             return True
         else:
             return False
+
+    def get_mac_address(self):
+        """
+        获取mac地址
+        """
+        mac=uuid.UUID(int = uuid.getnode()).hex[-12:] 
+        return ":".join([mac[e:e+2] for e in range(0,11,2)])
 
     def msg_process(self, msg):
         """
@@ -143,7 +151,7 @@ class Dialog(QDialog, Ui_Dialog):
         self.tableWidget.setColumnCount(5)##设置表格一共有五列
         self.tableWidget.setHorizontalHeaderLabels(['mac', 'ip', '子网掩码', '网关', '更新',])#设置表头文字
         self.tableWidget.horizontalHeader().setSectionsClickable(False) #可以禁止点击表头的列
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        # self.tableWidget.horizontalHeader().setStretchLastSection(True)
 
     def check_pi(self, mac):
         """
@@ -157,10 +165,22 @@ class Dialog(QDialog, Ui_Dialog):
             print("Find a Pi")
             return True
 
+    def remove_line(self, i):
+        """
+        删除一行
+        """
+        self.tableWidget.removeRow(i)
+
     def add_line(self, ip_list):
         """
         增加一行
         """
+        for i in range(self.tableWidget.rowCount()):
+            # 已经有了, 则不再插入
+            if self.tableWidget.item(i, 0).text() == ip_list[0]:
+                return
+
+        self.log_print("发现新的设备")
         row = self.tableWidget.rowCount()
         self.tableWidget.setRowCount(row + 1)
         self.tableWidget.setItem(row,0,QTableWidgetItem(ip_list[0]))
@@ -180,46 +200,26 @@ class Dialog(QDialog, Ui_Dialog):
         w.setLayout(h)
         self.tableWidget.setCellWidget(row, 4, w)
         self.tableWidget.resizeRowsToContents()
+        self.tableWidget.resizeColumnsToContents()
 
     def ip_change(self, my_list):
         """
         执行更新IP的命令
         """
-        cmd = self.udp_sender.gen_ip_change_cmd(my_list)
-        self.udp_sender.send_cmd(cmd)
-
-    def refresh_list(self, ip_list):
-        """
-        刷新IP List
-        """
-        self.tableWidget.clearContents()
-        self.tableWidget.setRowCount(0)
-        for row in ip_list:
-            # 找出 Pi 主机
-            if self.scan.check_pi(row[1], row[2]):
-                self.add_line(row[0], row[1], row[2])
-        self.log_print("扫描完成")
-        self.pushButton_Refresh.setEnabled(True)
-
-    # def get_ip_list_to_update(self):
-    #     """
-    #     获取需要更新的IP list
-    #     """
-    #     ip_list = []
-    #     for row in self.lines:
-    #         try:
-    #             if row[2].isChecked():
-    #                 ip_list.append([row[0], row[1]])
-    #         except Exception:
-    #             pass
-    #     return ip_list
-
-    def update_all_finish(self, msg):
-        """
-        更新后的操作
-        """
-        self.pushButton_UpdateAll.setEnabled(True)
-        self.log_print(msg)
+        rows = self.tableWidget.rowCount()
+        for i in range(rows):
+            # print(self.tableWidget.item(i,0).text())
+            if self.tableWidget.item(i, 0).text() == my_list[0] :
+                # print("Ready to send cmd to " + my_list[0])
+                new_list = [my_list[0], \
+                            self.tableWidget.item(i,1).text(), \
+                            self.tableWidget.item(i,2).text(), \
+                            self.tableWidget.item(i,3).text()]
+                cmd = self.udp_sender.gen_ip_change_cmd(new_list)
+                # print(cmd)
+                self.udp_sender.send_cmd(my_list[1], cmd)
+                self.remove_line(i)
+                self.log_print("更新 ({}){} 至 {}，重启中...".format(my_list[0], my_list[1], new_list[1]))
 
     @pyqtSlot()
     def on_pushButton_ClearLog_clicked(self):
@@ -227,29 +227,6 @@ class Dialog(QDialog, Ui_Dialog):
         清空日志
         """
         self.textEdit.setText("")
-    
-    @pyqtSlot()
-    def on_pushButton_Refresh_clicked(self):
-        """
-        刷新IP List
-        """
-        self.pushButton_Refresh.setEnabled(False)
-        self.log_print("正在扫描局域网，请稍等...")
-        self.tk1 = ScanThread()
-        self.tk1.finishSignal.connect(self.refresh_list)
-        self.tk1.start()
-
-    @pyqtSlot()
-    def on_pushButton_UpdateAll_clicked(self):
-        """
-        更新所有IP
-        """
-        self.pushButton_UpdateAll.setEnabled(False)
-        self.log_print("正在更新IP，请稍等...")
-        ip_list = self.get_ip_list_to_update()
-        self.tk2 = UpdateThread(ip_list)
-        self.tk2.finishSignal.connect(self.update_all_finish)
-        self.tk2.start()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

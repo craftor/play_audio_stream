@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'E:\01Git\play_audio_stream\pi_set\main.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.2
+# Created by: PyQt5 UI code generator 5.11.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -19,24 +19,18 @@ class Ui_Dialog(object):
         Dialog.setSizeGripEnabled(True)
         self.gridLayout_3 = QtWidgets.QGridLayout(Dialog)
         self.gridLayout_3.setObjectName("gridLayout_3")
+        self.pushButton_ClearLog = QtWidgets.QPushButton(Dialog)
+        self.pushButton_ClearLog.setObjectName("pushButton_ClearLog")
+        self.gridLayout_3.addWidget(self.pushButton_ClearLog, 2, 0, 1, 1)
         self.textEdit = QtWidgets.QTextEdit(Dialog)
         self.textEdit.setMaximumSize(QtCore.QSize(16777215, 100))
         self.textEdit.setObjectName("textEdit")
-        self.gridLayout_3.addWidget(self.textEdit, 2, 0, 1, 2)
-        self.pushButton_ClearLog = QtWidgets.QPushButton(Dialog)
-        self.pushButton_ClearLog.setObjectName("pushButton_ClearLog")
-        self.gridLayout_3.addWidget(self.pushButton_ClearLog, 3, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.textEdit, 1, 0, 1, 2)
         self.tableWidget = QtWidgets.QTableWidget(Dialog)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
-        self.gridLayout_3.addWidget(self.tableWidget, 1, 0, 1, 2)
-        self.pushButton_Refresh = QtWidgets.QPushButton(Dialog)
-        self.pushButton_Refresh.setObjectName("pushButton_Refresh")
-        self.gridLayout_3.addWidget(self.pushButton_Refresh, 0, 0, 1, 1)
-        self.pushButton_UpdateAll = QtWidgets.QPushButton(Dialog)
-        self.pushButton_UpdateAll.setObjectName("pushButton_UpdateAll")
-        self.gridLayout_3.addWidget(self.pushButton_UpdateAll, 0, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.tableWidget, 0, 0, 1, 2)
 
         self.retranslateUi(Dialog)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
@@ -45,8 +39,6 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "树莓派改IP"))
         self.pushButton_ClearLog.setText(_translate("Dialog", "清空日志"))
-        self.pushButton_Refresh.setText(_translate("Dialog", "刷新"))
-        self.pushButton_UpdateAll.setText(_translate("Dialog", "全部更新"))
 
 import source_rc
 

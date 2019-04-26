@@ -18,7 +18,7 @@ class udp_cmder(object):
 
     def get_ip_mask_gateway(self):
         """
-        获取本机IP
+        获取本机mac, ip, mask , gateway
         """
         routingGateway = netifaces.gateways()['default'][netifaces.AF_INET][0]
         routingNicName = netifaces.gateways()['default'][netifaces.AF_INET][1]
@@ -79,11 +79,11 @@ class udp_cmder(object):
             str += each + "|"
         return str
 
-    def send_cmd(self, cmd):
+    def send_cmd(self, host, cmd):
         """
         发送命令
         """
-        self.ss.sendto(cmd.encode('utf-8'), (self.network, self.PORT))
+        self.ss.sendto(cmd.encode('utf-8'), (host, self.PORT))
 
     def broadcast(self):
         cmd = self.gen_broadcast_cmd()
