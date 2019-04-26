@@ -1,12 +1,10 @@
-# udp_gb_client.py
-'''客户端（UDP协议局域网广播）'''
 
 import socket
 import shutil
 import uuid
 import os
 
-class udp_server(object):
+class udp_listener(object):
 
     def __init__(self, port):
         """
@@ -67,5 +65,5 @@ class udp_server(object):
             self.msg_process(data.decode('utf-8'))
 
 if __name__ == "__main__":
-    server = udp_server(1060)
+    server = udp_listener(1060)
     server.run()
