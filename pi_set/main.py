@@ -135,6 +135,8 @@ class Dialog(QDialog, Ui_Dialog):
         # Up and Down
         self.udp_sender = udp_cmder(1060)
 
+        self.log_print("正在扫描设备...")
+
     def log_print(self, str):
         """
         带时间日期的打印信息输出

@@ -11,7 +11,7 @@ if exist %folder% (
 )
 
 REM pyinstaller -F -i icon/logo.ico main.py
-pyinstaller -F -i pi.ico main.py
+pyinstaller -F -w -i pi.ico main.py
 
 copy dist\main.exe %folder%\%appName%-%dd%.exe
 
