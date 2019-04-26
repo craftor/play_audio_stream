@@ -29,7 +29,7 @@ import socket
 import threading
 import uuid
 
-VERSION = 3.0
+VERSION = 3.1
 
 # 扫描局域网的线程
 class ScanThread(QThread):
@@ -120,7 +120,7 @@ class Dialog(QDialog, Ui_Dialog):
         self.scan = NmapScan()
 
         # 版本号
-        title = "树莓派改IP小工具(for天立泰) v" + str(VERSION)
+        title = "树莓派改IP小工具 v" + str(VERSION)
         self.setWindowTitle(title)
 
         # 初始化表格

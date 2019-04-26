@@ -1,6 +1,3 @@
-# udp_gb_server.py
-'''服务端（UDP协议局域网广播）'''
-
 import socket
 import uuid
 import netifaces
@@ -87,7 +84,7 @@ class udp_cmder(object):
 
     def broadcast(self):
         cmd = self.gen_broadcast_cmd()
-        self.send_cmd(cmd)
+        self.ss.sendto(cmd.encode('utf-8'), ('<broadcast>', self.PORT))
 
     def test(self):
         """
