@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>网络音乐播放系统</title>
+    </head>
+    <body>
+        <h1 class="text-center">网络音乐播放系统</h1>
+
+        <h3 class="text-primary">系统信息</h3>
+        <table class="table table-striped table-bordered table-hover table-condensed text-center">
+            <tr>
+                <td></td>
+                <td>MAC地址</td>
+                <td>IP地址</td>
+                <td>CPU温度</td>
+            </tr>
+            <tr>
+                <td>基本信息</td>
+                <td>{{ net_info['mac'] }}</td>
+                <td>{{ net_info['ip'] }}</td>
+                <td {% if (sys_info['cpu_temp'])<58  %}class="success"{% else %}class="warning"{% endif %}>{{ sys_info['cpu_temp']}}℃</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>总容量</td>
+                <td>已使用</td>
+                <td>剩余</td>
+            </tr>
+            <tr>
+                <td>内存信息</td>
+                <td>{{ sys_info['mem_info']['total'] }}</td>
+                <td>{{ sys_info['mem_info']['used'] }}</td>
+                <td {% if sys_info['mem_info']['used_proportion']>30 %}class="success"{% else %}class="warning"{% endif %}>{{ sys_info['mem_info']['left'] }}({{ sys_info['mem_info']['used_proportion'] }}%)</td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>总容量</td>
+                <td>已使用</td>
+                <td>剩余</td>
+            </tr>
+            <tr>
+                <td>磁盘信息</td>
+                <td>{{ hd_info['total'] }}</td>
+                <td>{{ hd_info['used'] }}</td>
+                <td  {% if hd_info['used_proportion']>30 %}class="success"{% else %}class="warning"{% endif %}>{{ hd_info['free'] }}({{ hd_info['used_proportion'] }}%)</td>
+            </tr>
+        </table>
+
+        <h3 class="text-primary">参数设置</h3>
+        <table class="table table-striped table-bordered table-hover table-condensed text-center">
+            <tr>
+                <td>参数</td>
+                <td>值</td>
+                <td>单位</td>
+                <td>修改</td>
+            </tr>
+        </table>
+
+        <h3 class="text-primary">音乐播放测试</h3>
+        <table class="table table-striped table-bordered table-hover table-condensed text-center">
+            <tr>
+                <td>音乐地址</td>
+                <td>操作</td>
+            </tr>
+            <tr>
+                <form method="GET" action="/play">
+                    <td><input type="text" name="play_file_name" }} class="form-control text-center"></td>
+                    <td><input type="submit" value="播放" class="btn btn-primary"></td>
+                </form>
+            </tr>
+        </table>
+
+    </body>
+
+</html>

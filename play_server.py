@@ -4,13 +4,17 @@ import os
 import pygame
 import urllib
 from io import BytesIO, StringIO
+from waitress import serve
 
-from flask import Flask, render_template, Response, request
+
+from flask import Flask, render_template, Response, request, redirect
 from flask import send_from_directory
 from flask import url_for
 
 from flask import Flask
 app = Flask(__name__)
+
+from tools import *
 
 # 初始化pygame
 pygame.mixer.init()
@@ -19,7 +23,16 @@ pygame.mixer.init()
 # Index
 @app.route('/')
 def index():
-    return "Server OK"
+    # 硬盘情况
+    hd_info = disk_status("/")
+    # 网络情况
+    net_info = net_status()
+    # 系统参数
+    sys_info = sys_status()
+    return render_template("index.html",
+                            sys_info=sys_info,
+                            hd_info=hd_info,
+                            net_info=net_info)
 
 # 检查音乐是否正在播放
 @app.route('/get_busy')
@@ -184,7 +197,8 @@ def play():
     except Exception:
         return "Failed"
 
-    return "OK"
+    return redirect(url_for("index"))
 
 if __name__ == '__main__':
+    # serve(app, host="0.0.0.0", port=8080)
     app.run(debug=True, host='0.0.0.0',port=8080)
