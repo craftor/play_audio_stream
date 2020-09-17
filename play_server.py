@@ -197,7 +197,7 @@ def play():
     except Exception:
         return "Failed"
 
-    return redirect(url_for("index"))
+    return "OK"
 
 if __name__ == '__main__':
     # serve(app, host="0.0.0.0", port=8080)
